@@ -5,7 +5,7 @@ clear figures
 %% Luminescence refined 26Al/10Be burial modelling of Camp Century subglacial sediment
 % This script models the burial and paleo-exposure history of the Camp
 % Century subglacial sediment given the luminescence-constrained
-% depositional age (406 +- 35 ka) of the upper most sediment (1059-4)
+% depositional age (416 +- 38 ka) of the upper most sediment (1059-4)
 % during MIS 11.
 
 % Using the observed 26Al and 10Be concentrations and uncertainties in the
@@ -14,13 +14,13 @@ clear figures
 % then calculates average nuclide concentrations weighted by measurement
 % uncertainty.
 
-% Then, the 26Al and 10Be concentrations of 1059-4 are corrected for 406 +-
-% 35
+% Then, the 26Al and 10Be concentrations of 1059-4 are corrected for 416 +-
+% 38
 % of burial. This yields the 26Al/10Be ratio of the upper sediment at
 % the time of sediment deposition
 % in a small surface stream, assuming the sediment was sufficiently buried
 % (by either sediment or ice) to prevent additional nuclide production
-% since 406 +- 35 ka.
+% since 416 +- 38 ka.
 
 % The next step calculates the inventory of nuclides that could accumulate
 % during a range of paleo-exposure periods of the upper sediment given the
@@ -30,7 +30,7 @@ clear figures
 % 26Al/10Be ratio is equal to 0.
 
 % For the lower sediment (1063-7), this script corrects the 26Al/10Be ratio
-% for 406 +- 35 kyr of burial PLUS an additional period of burial (0-16
+% for 416 +- 38 kyr of burial PLUS an additional period of burial (0-16
 % kyr) that is equivalent to the range of exposure durations of the upper
 % sediment.
 
@@ -40,7 +40,7 @@ clear figures
 % This script generates two plots: Figure 1 is a two-isotope plot (banana
 % plot) of 10Be concentrations vs the 26Al/10Be ratios of the upper (blue)
 % and lower sediment (red): 1) weighted mean observed values and 2)
-% corrected for 406 +- 35 kyr of burial. For the upper sediment, the
+% corrected for 416 +- 38 kyr of burial. For the upper sediment, the
 % modelled 26Al/10Be and 10Be concs given the range of MIS 11
 % paleo-exposure durations is shown (blues and greens). For the lower
 % sediment, the 26Al/10Be and 10Be concs are shown given the additional
@@ -61,7 +61,7 @@ clear figures
  
 sim = 100; %number of simulations for weighted avg nuclide concentrations (observed) and the uncertainty of OSL burial ages. Change this as needed. 
 
-irsl_bur = 406000; irsl_bur_err = 35000; % IRSL mean +/- 1 standard error, 
+irsl_bur = 416000; irsl_bur_err = 38000; % IRSL mean +/- 1 standard error, 
 tbur_sim = irsl_bur_err.*randn(sim,1) + irsl_bur; %create vector of random IRSL ages using mean age and standard error.
 
 % 1.1 Paleo-exposure scenarios
@@ -119,7 +119,7 @@ t_bur_mu = mean(t_bur); t_bur_sd = std(t_bur); % mean initial burial history: 1.
 
 cov_obs = cov(be10_wmu,rat_wmu); %covariance of be10 and ratio weighted averages (2 x 2) matrix. Used to plot error ellipses
 
-%% 2.2 Solve for nuclide concentrations and ratio at the time of sediment deposition at 390 ka assuming:
+%% 2.2 Solve for nuclide concentrations and ratio at the time of sediment deposition at 416 ka assuming:
 % 1. burial age = IRSL sediment depositional age (i.e. end of MIS 11)
 % 2. upper sediment remained completely buried and no additional nuclide
 % production has occured since deposition.
@@ -137,11 +137,11 @@ al26_0mu = mean(al26_0); al26_0unc = mean(al26_0sd); %mean concs at time of sedi
 be10_0mu = mean(be10_0); be10_0unc = mean(be10_0sd); %mean concs at time of sediment deposition
 
 rat_0 = al26_0./be10_0; rat_0unc = rat_0.*sqrt((be10_0sd./be10_0).^2+(al26_0sd./al26_0).^2); %nuclide ratio simulations that account for variability of both measurement variability and IRSL age uncertainty
-rat_0mu = mean(rat_0(:)); rat_0sd = mean(rat_0unc(:)); %26Al/10Be = 5.4 +/- 0.8 at the time of sediment deposition at 406 +- 35 ka 
+rat_0mu = mean(rat_0(:)); rat_0sd = mean(rat_0unc(:)); %26Al/10Be = 5.4 +/- 0.8 at the time of sediment deposition at 416 +- 38 ka 
 
-% total burial history at the time of sediment deposition at 406 +- 35 ka
-t_bur_0 = (-log(rat_0/7.3))/(lam26-lam10); %total burial history of each simulation corrected for 406 +- 35 kyr burial
-t_bur_0mu = mean(t_bur_0); t_bur_0sd = std(t_bur_0); % mean total burial history after corrected for 406 +- 35 kyr burial: 0.67 +/-0.06 Myr
+% total burial history at the time of sediment deposition at 416 +- 38 ka
+t_bur_0 = (-log(rat_0/7.3))/(lam26-lam10); %total burial history of each simulation corrected for 416 +- 38 kyr burial
+t_bur_0mu = mean(t_bur_0); t_bur_0sd = std(t_bur_0); % mean total burial history after corrected for 416 +- 38 kyr burial: 0.67 +/-0.06 Myr
 
 cov_0 = cov(be10_0,rat_0); % covariance of irsl-corrected be10 and ratio weighted averages in (2 x 2) matrix, used for plotting error ellipse
 
@@ -149,7 +149,7 @@ al26_0m = repmat(al26_0,1,z_t); be10_0m = repmat(be10_0,1,z_t); % creates blank 
 
 %% 2.3 Calculate inherted nuclide concs and ratios based on different paleoexposure scenarios during MIS 11
 % Using the nuclide concs at the end of MIS 11 (before sediment deposition
-% at 406 +- 35 ka), apply a variety of exposure scenarios (t_exp) during
+% at 416 +- 38 ka), apply a variety of exposure scenarios (t_exp) during
 % MIS 11. subscript: inh = inherited
 
 % calculate a vector of nuclides that would accumulate under different
@@ -193,7 +193,7 @@ t_bur_inh_mu = mean(t_bur_inh,2); t_bur_inh_sd = std(t_bur_inh,[],2);%vectors of
 % sediment remained buried or shielded from nuclide production during MIS
 % 11. Throughout this section 'l' for 'lower' appended to variables.
 
-% 3.1 Burial history corrected for up to 422 (406 + 16) kyr burial (assume this sediment was buried during MIS 11). 
+% 3.1 Burial history corrected for up to 432 (416 + 16) kyr burial (assume this sediment was buried during MIS 11). 
 tburl_sim = (tbur_sim)+t_exp'; %adds the exposure duration to the IRSL burial duration for a total burial duration to beginning of last exposure 
 
 % Monte Carlo simulation of observed 26Al & 10Be concs from lower sediment based on individual measurement and uncertainty. Creates [3 sim] matrix
@@ -224,7 +224,7 @@ covl_obs = cov(be10l_wmu,ratl_wmu); %used for plotting error ellipses
 % 3.2 LOWER SEDIMENT inherited nuclide concentrations and burial history
 
 %Simulated nuclide concentrations and ratios assuming that the lower
-%sediment remained buried since 406+-35 ka and during the exposure of the
+%sediment remained buried since 416+-38 ka and during the exposure of the
 %upper sediment (t_exp).
 
 %This creates a [sim sim] matrix (the columns are the nuclide variations
@@ -238,11 +238,11 @@ al26l_0mu = mean(al26l_0); al26l_0unc = mean(al26l_0sd); %mean conc and sd at ti
 be10l_0mu = mean(be10l_0); be10l_0unc = mean(be10l_0sd);
 
 ratl_0 = al26l_0./be10l_0; ratl_0unc = rat_0.*sqrt((be10l_0sd./be10l_0).^2+(al26l_0sd./al26l_0).^2); %nuclide ratio simulations that account for variability of both measurement variability and IRSL age uncertainty
-ratl_0mu = mean(ratl_0(:)); ratl_0sd = mean(ratl_0unc(:)); %2.2 +/- 1.2 at 406 ka when upper sediment was deposited.
+ratl_0mu = mean(ratl_0(:)); ratl_0sd = mean(ratl_0unc(:)); %2.2 +/- 1.2 at 416 ka when upper sediment was deposited.
 
-%burial history of lower sediment at 406 +- 35 ka
-t_burl_0 = (-log(ratl_0/7.3))/(lam26-lam10); %total burial history of each simulation corrected for 406 +- 35 kyr burial
-t_burl_0mu = mean(t_burl_0); t_burl_0sd = std(t_burl_0); % mean total burial history after corrected for 406 +- 35 kyr burial: 2.7 +/-0.2 Myr
+%burial history of lower sediment at 416 +- 38 ka
+t_burl_0 = (-log(ratl_0/7.3))/(lam26-lam10); %total burial history of each simulation corrected for 416 +- 38 kyr burial
+t_burl_0mu = mean(t_burl_0); t_burl_0sd = std(t_burl_0); % mean total burial history after corrected for 416 +- 38 kyr burial: 2.7 +/-0.2 Myr
 
 covl_0 = cov(be10l_0,ratl_0); %covariance of irsl-corrected be10 and ratio weighted averages in (2 x 2) matrix; used for plottong error ellipses
 
@@ -297,9 +297,9 @@ berat_mu_all=horzcat(be_mu_all,be_err_all,rat_mu_all,rat_err_all); %compiled Be 
 
 % Figure 1: banana plot showing the 10Be and 26Al/10Be ratios: 1) observed
 % weighted means of 1059-4 (cool colors) and 1063-7 (warm colors), 2) timing of upper sediment
-% deposition at 406 +- 35 ka IRSL corrected ratio and 10Be for both
+% deposition at 416 +- 38 ka IRSL corrected ratio and 10Be for both
 % samples, 3) modelled inherited ratio and 10Be prior to exposure of upper
-% sediment and additional burial of lower sediment (406 + 16 = 422 kyr).
+% sediment and additional burial of lower sediment (416 + 16 = 432 kyr).
 
 %set up banana plot: burial isochrons
 t = (0:1E3:4E6);
@@ -357,7 +357,7 @@ hold on
 scatter(be10l_obs_mu,ratl_obs_mu,25,'MarkerFaceColor',red,'MarkerEdgeColor','k','DisplayName','Measured 1063-7') %plots weighted mean observed ratio and 10Be concs.
 hold on
 
-%to plot mean simulated 10Be under different 390 +- 40 kyr burial + burial equiv to exposure duration in 1063-7
+%to plot mean simulated 10Be under different 416 +- 38 kyr burial + burial equiv to exposure duration in 1063-7
 for k=1:size(be10l_inh,1) 
         plot(be10l_inh_mu(k,:),ratl_inh_mu(k,:),'-o','MarkerFaceColor',Cr(k,:),'DisplayName',t_exp_leg(k,:),'MarkerEdgeColor','k','MarkerSize',6,'LineWidth',1)  
 end
